@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Boîte à idées</title>
+	<style>
+		.hidden
+		{
+			display: none;
+		}
+	</style>
+</head>
+<body>
+	<h1>Boîte à idées</h1>
+	<section>
+		Identifiez-vous
+		<form id="auth" action="auth.php" method="post">
+			<input id="name" name="name" type="text" placeholder="Votre login">
+			<input id="pwd" name="pwd" type="password" placeholder="Mot de passe">
+			<input type="submit" value="Connectez-vous">
+		</form>
+	</section>
+
+	<section id="welcome" class="hidden">Bienvenue</section>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script>
+		( function( $ )
+		{
+			var $auth = $( "#auth" )
+				,$login = $( "#login" )
+				,$pwd = $( "#pwd" );
+			$auth.on
+			(
+				"submit"
+			    , function( event )
+				{
+					// Vérification des input
+					if( $login.val() != ""
+						&& $pwd.val() != "" )
+					{
+						// AJAX
+						$.ajax
+						(
+							"auth.php"
+						    ,{
+								data : { name : $login.val(), pwd : $pwd.val() }
+								,dataType : "json"
+								,method : "post"
+								, success : function( message )
+								{
+									console.log( message );
+								}
+							}
+						)
+
+						$('#welcome' ).removeClass( "hidden" );
+					} else
+					{
+						// Erreur d'inscription
+						alert( "Veuillez saisir votre indentifiant." );
+					}
+
+					event.preventDefault();
+					return false;
+				}
+			);
+		})(jQuery);
+	</script>
+</body>
+</html>
